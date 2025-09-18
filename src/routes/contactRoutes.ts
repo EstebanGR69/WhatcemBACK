@@ -34,4 +34,12 @@ contactRoutes.put("/contacts/wallet/:contactId", isAuth, ContactController.updat
 contactRoutes.delete("/contacts/wallet/:contactId", isAuth, ContactController.deleteContactWallet);
 // contactRoutes.get("/contacts/list-whatsapp", isAuth, ContactController.listWhatsapp);
 
+//Ruta prueba
+contactRoutes.get("/contacts/xd", async (req,res) => {
+    res.status(200).json({
+        status:200,
+        message:"Eres la verga we xd"
+    })
+})
+
 export default contactRoutes;
