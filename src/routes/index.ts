@@ -4,6 +4,7 @@ import userRoutes from "./userRoutes";
 import authRoutes from "./authRoutes";
 import settingRoutes from "./settingRoutes";
 import contactRoutes from "./contactRoutes";
+import n8nRoutes from "./n8nRoutes";
 import ticketRoutes from "./ticketRoutes";
 import whatsappRoutes from "./whatsappRoutes";
 import messageRoutes from "./messageRoutes";
@@ -67,11 +68,16 @@ routes.get("/ping", (req, res) => {
   res.send("pong");
 });
 
+routes.get("/tralalero", (req, res) => {
+  res.send("tralalá");
+});
+
 routes.use(userRoutes);
 routes.use("/auth", authRoutes);
 routes.use("/api/messages", apiRoutes);
 routes.use(settingRoutes);
 routes.use(contactRoutes);
+routes.use(n8nRoutes);
 routes.use(ticketRoutes);
 routes.use(whatsappRoutes);
 routes.use(messageRoutes);
