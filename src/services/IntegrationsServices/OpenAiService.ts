@@ -76,22 +76,23 @@ const sanitizeName = (name: string): string => {
 
 // Função para detectar solicitação de transferência para atendente
 const detectTransferRequest = (message: string): boolean => {
+
   const transferKeywords = [
-    'falar com atendente',
-    'quero um atendente', 
-    'atendente humano',
-    'pessoa real',
-    'sair do bot',
+    'hablar con un agente',
+    'quiero un agente',
+    'agente humano',
+    'persona real',
+    'salir del bot',
     'parar bot',
-    'atendimento humano',
-    'falar com alguém',
-    'não estou conseguindo',
-    'isso não funciona',
-    'não entendi',
-    'preciso de ajuda real',
-    'quero falar com uma pessoa',
-    'me transfere',
-    'atendente por favor'
+    'atención humana',
+    'hablar con alguien',
+    'no puedo',
+    'esto no funciona',
+    'no entiendo',
+    'necesito ayuda real',
+    'quiero hablar con una persona',
+    'transfiéreme',
+    'un agente por favor'
   ];
 
   const lowerMessage = message.toLowerCase();
@@ -126,10 +127,10 @@ const checkObjectiveCompletion = async (
     const analysisPrompt = `
 Objetivo: ${objective}
 
-Conversa:
+Conversación:
 ${conversationText}
 
-Pergunta: O objetivo foi completado com sucesso? Responda apenas "SIM" ou "NÃO".
+Pregunta: ¿El objetivo se completó con éxito? Responda solo "SÍ" o "NO".
 `;
 
     const response = await openai.chat.completions.create({
@@ -169,10 +170,10 @@ const returnToFlow = async (ticket: Ticket, reason: string): Promise<void> => {
 
     // Enviar mensagem de transição
     const transitionMessages = {
-      user_requested: "Perfeito! Vou prosseguir com o atendimento.",
-      max_interactions: "Obrigado pelas informações! Vou continuar com o próximo passo.",
-      timeout: "Vou prosseguir com o atendimento.",
-      objective_completed: "Ótimo! Completamos essa etapa. Vamos continuar!"
+      user_requested: "¡Perfecto! Voy a continuar con la atención.",
+      max_interactions: "¡Gracias por la información! Voy a continuar con el siguiente paso.",
+      timeout: "Voy a continuar con la atención.",
+      objective_completed: "¡Excelente! Completamos esta etapa. ¡Continuemos!"
     };
 
     const transitionMessage = transitionMessages[reason] || "Continuando...";
@@ -288,7 +289,7 @@ const processResponse = async (
       status: "pending"
     });
 
-    const transferMessage = "Entendi que você gostaria de falar com um atendente humano. Estou transferindo você agora. Aguarde um momento!";
+    const transferMessage = "Entendí que te gustaría hablar con un agente humano. Te estoy transfiriendo ahora. ¡Espera un momento!";
     
     const sentMessage = await wbot.sendMessage(msg.key.remoteJid!, {
       text: `\u200e ${transferMessage}`,
@@ -580,16 +581,16 @@ if (minutesElapsed >= aiSettings.completionTimeout) {
 
     // Formatar prompt do sistema
     const clientName = sanitizeName(contact.name || "Amigo(a)");
-    const promptSystem = `Instruções do Sistema:
-    - Use o nome ${clientName} nas respostas para que o cliente se sinta mais próximo e acolhido.
-    - Certifique-se de que a resposta tenha até ${aiSettings.maxTokens} tokens e termine de forma completa, sem cortes.
-    - Sempre que possível, inclua o nome do cliente para tornar o atendimento mais pessoal e gentil.
-    - Se for preciso transferir para outro setor, comece a resposta com 'Ação: Transferir para o setor de atendimento'.
+    const promptSystem = `Instrucciones para el Sistema:
+    - Usa el nombre ${clientName} en las respuestas para que el cliente se sienta más en confianza y bienvenido.
+    - Asegúrate de que la respuesta tenga un máximo de ${aiSettings.maxTokens} tokens y termine de forma completa, sin cortes.
+    - Siempre que sea posible, incluye el nombre del cliente para hacer la atención más personal y amable.
+    - Si es necesario transferir a otro departamento, la respuesta debe comenzar con 'Acción: Transferir al área de atención'.
     
     Prompt Específico:
     ${aiSettings.prompt}
     
-    Siga essas instruções com cuidado para garantir um atendimento claro e amigável em todas as respostas.`;
+    Sigue estas instrucciones cuidadosamente para garantizar una atención clara y amable en todas las respuestas.`;
 
     // Processar mensagem de texto
     if (bodyMessage) {
