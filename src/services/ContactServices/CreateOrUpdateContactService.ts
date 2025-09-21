@@ -114,12 +114,14 @@ const CreateOrUpdateContactService = async ({
       contact = await Contact.findOne({ where: { number, companyId } });
     }
 
+    /* Variable para validar si se crea o actualiza imagen */   
     let updateImage =
       ((!contact ||
         (contact?.profilePicUrl !== profilePicUrl && profilePicUrl !== "")) &&
         (wbot || ["instagram", "facebook"].includes(channel))) ||
       false;
 
+    /* SI se encontró usuario, se actualiza */
     if (contact) {
       // if (ENABLE_LID_DEBUG) {
       //   logger.info(
@@ -134,7 +136,7 @@ const CreateOrUpdateContactService = async ({
         if (contact.lid) {
           if (ENABLE_LID_DEBUG) {
             logger.info(
-              `[LID-DEBUG] Removendo LID do contato pois mensagem recebida não tem LID`
+              `[LID-DEBUG] Quitando el LID del contacto ya que el mensaje recibido no contiene un LID.`
             );
           }
           contact.lid = null;
@@ -212,7 +214,9 @@ const CreateOrUpdateContactService = async ({
       //     `[LID-DEBUG] Contato atualizado: id=${contact.id}, number=${contact.number}, jid=${contact.remoteJid}, lid=${contact.lid}`
       //   );
       // }
-    } else if (["whatsapp"].includes(channel)) {
+    }
+    /* Validar canal Whatsapp */ 
+    else if (["whatsapp"].includes(channel)) {
       const settings = await CompaniesSettings.findOne({
         where: { companyId }
       });
@@ -224,7 +228,7 @@ const CreateOrUpdateContactService = async ({
       //     ? `${rawNumber}@g.us`
       //     : `${rawNumber}@s.whatsapp.net`;
       // }
-
+      
       if (ENABLE_LID_DEBUG) {
         logger.info(
           `[LID-DEBUG] Criando novo contato: number=${number}, jid=${newRemoteJid}, lid=${lid}`
@@ -308,7 +312,7 @@ const CreateOrUpdateContactService = async ({
     // Se ainda não temos contato aqui, não prossiga para evitar null reference
     if (!contact) {
       throw new Error(
-        "Não foi possível criar ou localizar o contato. Informe o número/canal corretamente."
+        "No se pudo crear o encontrar el contacto. Por favor, ingrese el número/canal correctamente."
       );
     }
 
