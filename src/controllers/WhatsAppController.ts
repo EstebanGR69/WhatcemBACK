@@ -162,6 +162,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   }: WhatsappData = req.body;
   const { companyId } = req.user;
 
+  const authHeader = req.headers.authorization;
+
   const company = await ShowCompanyService(companyId);
   const plan = await ShowPlanService(company.planId);
 
@@ -239,7 +241,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
       };
 
       const { webhookLink, connectionId } =
-        await CreateCompanyConnectionOficial(data);
+        await CreateCompanyConnectionOficial(data, authHeader);
 
         console.log("Me vine");
         

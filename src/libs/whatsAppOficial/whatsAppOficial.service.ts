@@ -48,18 +48,16 @@ export const sendMessageWhatsAppOficial = async (
 }
 
 //El bueno
-export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhatsAppOficial) => {
+export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhatsAppOficial, authHeader) => {
     try {
 
         const { company, whatsApp } = data;
 
-        const companySaved = await CreateCompanyWhatsAppOficial(company.companyId, company.companyName);
+        const companySaved = await CreateCompanyWhatsAppOficial(company.companyId, company.companyName, authHeader);
 
-        console.log(`Empresa: ${companySaved.id}`)
+        console.log(`Empresa: ${companySaved.id}`);
 
         const connection = {id : companySaved.id}//await CreateConnectionWhatsAppOficial(whatsApp);
-
-        console.log(`Conexão criada: ${JSON.stringify(connection)}`);
 
         const webhookLink = `${urlApi}/v1/webhook/${companySaved.id}/${connection.id}`;
 
@@ -92,12 +90,12 @@ export const checkAPIOficial = async () => {
     }
 }
 
-export const CreateCompanyWhatsAppOficial = async (companyId: string, companyName: string) => {
+export const CreateCompanyWhatsAppOficial = async (companyId: string, companyName: string, authHeader: string) => {
     try {
 
         const resCompanies = await axios.get(`${urlApi}/companies`, {
             headers: {
-                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2FybmFtZSI6IkFkbWluIiwicHJvZmlsZSI6ImFkbWluIiwiaWQiOjEsImNvbXBhbnlJZCI6MSwiaWF0IjoxNzU4NTU1NDYwLCJleHAiOjE3NTg1NTYzNjB9.yKU9FuV1HS7dgfMhGqz1qeubXYL95FQYXFE8lUuxsek`
+                'Authorization': `${authHeader}`
             }
         });
 
@@ -116,7 +114,7 @@ export const CreateCompanyWhatsAppOficial = async (companyId: string, companyNam
         },
             {
                 headers: {
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2FybmFtZSI6IkFkbWluIiwicHJvZmlsZSI6ImFkbWluIiwiaWQiOjEsImNvbXBhbnlJZCI6MSwiaWF0IjoxNzU4NTU1NDYwLCJleHAiOjE3NTg1NTYzNjB9.yKU9FuV1HS7dgfMhGqz1qeubXYL95FQYXFE8lUuxsek`
+                    'Authorization': `${authHeader}`
                 }
             }
         );
@@ -135,7 +133,7 @@ export const CreateCompanyWhatsAppOficial = async (companyId: string, companyNam
     }
 }
 
-export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWhatsAppOficialWhatsApp) => {
+export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWhatsAppOficialWhatsApp, authHeader: string) => {
     try {
 
         console.log("Me la pelas put", data);
@@ -144,7 +142,7 @@ export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWha
         const res = await axios.post(`${urlApi}/v1/whatsapp-oficial`, { ...data },
             {
                 headers: {
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2FybmFtZSI6IkFkbWluIiwicHJvZmlsZSI6ImFkbWluIiwiaWQiOjEsImNvbXBhbnlJZCI6MSwiaWF0IjoxNzU4NTU1NDYwLCJleHAiOjE3NTg1NTYzNjB9.yKU9FuV1HS7dgfMhGqz1qeubXYL95FQYXFE8lUuxsek`
+                    'Authorization': `${authHeader}`
                 }
             }
         );
