@@ -241,6 +241,9 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
       const { webhookLink, connectionId } =
         await CreateCompanyConnectionOficial(data);
 
+        console.log("Me vine");
+        
+
       if (webhookLink) {
         whatsapp.waba_webhook = webhookLink;
         whatsapp.waba_webhook_id = connectionId;
