@@ -162,10 +162,9 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   }: WhatsappData = req.body;
   const { companyId } = req.user;
 
-  const authHeader = req.headers.authorization;
-
   const company = await ShowCompanyService(companyId);
   const plan = await ShowPlanService(company.planId);
+  const authHeader = req.headers.authorization;
 
   if (!plan.useWhatsapp) {
     return res.status(400).json({
@@ -242,9 +241,6 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
       const { webhookLink, connectionId } =
         await CreateCompanyConnectionOficial(data);
-
-        console.log("Me vine");
-        
 
       if (webhookLink) {
         whatsapp.waba_webhook = webhookLink;

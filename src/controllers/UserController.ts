@@ -156,11 +156,11 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     const user = await CreateCompanyService(companyData);
 
     try {
-      const _email = {
+    const _email = {
         to: email,
-        subject: `Login e senha da Empresa ${companyName}`,
-        text: `Olá ${name}, este é um email sobre o cadastro da ${companyName}!<br><br>
-        Segue os dados da sua empresa:<br><br>Nome: ${companyName}<br>Email: ${email}<br>Senha: ${password}<br>Data Vencimento Trial: ${dateToClient(
+        subject: `Login y contraseña de la Empresa ${companyName}`,
+        text: `Hola ${name}, este es un email sobre el registro de la empresa ${companyName}!<br><br>
+        A continuación, los datos de tu empresa:<br><br>Nombre: ${companyName}<br>Email: ${email}<br>Contraseña: ${password}<br>Vencimiento del Periodo de Prueba: ${dateToClient(
           date
         )}`
       };
@@ -181,7 +181,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
         const whatsappId = whatsappCompany.whatsapps[0].id;
         const wbot = getWbot(whatsappId);
 
-        const body = `Olá ${name}, este é uma mensagem sobre o cadastro da ${companyName}!\n\nSegue os dados da sua empresa:\n\nNome: ${companyName}\nEmail: ${email}\nSenha: ${password}\nData Vencimento Trial: ${dateToClient(
+        const body = `Hola ${name}, este es un mensaje sobre el registro de la empresa ${companyName}!\n\nA continuación, los datos de tu empresa:\n\nNombre: ${companyName}\nEmail: ${email}\nContraseña: ${password}\nVencimiento del Periodo de Prueba: ${dateToClient(
           date
         )}`;
 

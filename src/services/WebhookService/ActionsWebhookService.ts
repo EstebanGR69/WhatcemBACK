@@ -621,10 +621,10 @@ export const ActionsWebhookService = async (
           // ✅ ENVIAR MENSAGEM DE BOAS-VINDAS IMEDIATAMENTE
           if (name) {
             const welcomeMessage = objective
-              ? `Olá! Sou ${name}. ${objective}`
+              ? `¡Hola! Soy ${name}. ${objective}`
               : flowMode === "temporary" && continueKeywords?.length > 0
-                ? `Olá! Sou ${name}. Como posso ajudá-lo? (Digite "${continueKeywords[0]}" quando quiser prosseguir)`
-                : `Olá! Sou ${name}. Como posso ajudá-lo?`;
+                ? `¡Hola! Soy ${name}. ¿Cómo puedo ayudarte? (Escribe "${continueKeywords[0]}" cuando quieras continuar)`
+                : `¡Hola! Soy ${name}. ¿Cómo puedo ayudarte?`;
 
             logger.info(`[${provider.toUpperCase()} NODE] Enviando boas-vindas para ticket ${ticket.id}`);
 

@@ -35,5 +35,5 @@ parentPort.on("message", async data => {
   }
 
   // Enviar uma mensagem de volta para o thread principal
-  parentPort.postMessage("Olá, thread principal!");
+  parentPort.postMessage("Hello WOrld :D");
 });

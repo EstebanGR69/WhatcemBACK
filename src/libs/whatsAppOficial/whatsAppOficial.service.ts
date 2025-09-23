@@ -5,8 +5,8 @@ import mime from "mime-types";
 import FormData from "form-data";
 
 const useOficial = process.env.USE_WHATSAPP_OFICIAL;
-const urlApi = "http://localhost:6000";
-const token = "your_token";
+const urlApi = "https://api.whatcem.com";
+const token = process.env.TOKEN_API_OFICIAL;
 
 export const sendMessageWhatsAppOficial = async (
     filePath: string,
@@ -50,6 +50,8 @@ export const sendMessageWhatsAppOficial = async (
 //El bueno
 export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhatsAppOficial) => {
     try {
+
+        
 
         const { company, whatsApp } = data;
 
