@@ -37,7 +37,9 @@ export const initIO = (httpServer: Server): SocketIO => {
   workspaces.on("connection", socket => {
 
     const token_api_oficial = process.env.TOKEN_API_OFICIAL || "";
-    const token = Array.isArray(socket?.handshake?.query?.token) ? socket.handshake.query.token[1] : socket?.handshake?.query?.token?.split(" ")[1];
+    const token = Array.isArray(socket?.handshake?.query?.token)
+      ? (socket.handshake.query.token as any)[1]
+      : socket?.handshake?.query?.token?.split(" ")[1];
 
     if (!token) {
       return socket.disconnect();

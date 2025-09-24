@@ -5,8 +5,8 @@ import mime from "mime-types";
 import FormData from "form-data";
 
 const useOficial = process.env.USE_WHATSAPP_OFICIAL;
-const urlApi = process.env.URL_API_OFICIAL;
-const token = process.env.TOKEN_API_OFICIAL;
+const urlApi = "http://localhost:6000";
+const token = "your_token";
 
 export const sendMessageWhatsAppOficial = async (
     filePath: string,
@@ -48,16 +48,16 @@ export const sendMessageWhatsAppOficial = async (
 }
 
 //El bueno
-export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhatsAppOficial, authHeader) => {
+export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhatsAppOficial) => {
     try {
 
         const { company, whatsApp } = data;
 
-        const companySaved = await CreateCompanyWhatsAppOficial(company.companyId, company.companyName, authHeader);
+        const companySaved = await CreateCompanyWhatsAppOficial(company.companyId, company.companyName);
 
         console.log(`Empresa: ${companySaved.id}`);
 
-        const connection = {id : companySaved.id}//await CreateConnectionWhatsAppOficial(whatsApp);
+        const connection = await CreateConnectionWhatsAppOficial(whatsApp);
 
         const webhookLink = `${urlApi}/v1/webhook/${companySaved.id}/${connection.id}`;
 
@@ -90,31 +90,31 @@ export const checkAPIOficial = async () => {
     }
 }
 
-export const CreateCompanyWhatsAppOficial = async (companyId: string, companyName: string, authHeader: string) => {
+export const CreateCompanyWhatsAppOficial = async (companyId: string, companyName: string) => {
     try {
 
-        const resCompanies = await axios.get(`${urlApi}/companies`, {
+        const resCompanies = await axios.get(`${urlApi}/v1/companies`, {
             headers: {
-                'Authorization': `${authHeader}`
+                'Authorization': `Bearer ${token}`
             }
         });
 
-        const companies = resCompanies.data.companies as Array<IReturnCreateCompanyAPIWhatsAppOficial>;
+        const companies = resCompanies.data as Array<IReturnCreateCompanyAPIWhatsAppOficial>;
 
-        const company = companies.find(c => String(c.id) == companyId);
+        const company = companies.find(c => String(c.idEmpresaMult100) == companyId);
 
         if (!!company) {
             console.log(`Sexo rico`);
             return company
         }
 
-        const res = await axios.post(`${urlApi}/companies`, {
+        const res = await axios.post(`${urlApi}/v1/companies`, {
             idEmpresaMult100: +companyId,
             name: companyName
         },
             {
                 headers: {
-                    'Authorization': `${authHeader}`
+                    'Authorization': `Bearer ${token}`
                 }
             }
         );
@@ -133,16 +133,15 @@ export const CreateCompanyWhatsAppOficial = async (companyId: string, companyNam
     }
 }
 
-export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWhatsAppOficialWhatsApp, authHeader: string) => {
+export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWhatsAppOficialWhatsApp) => {
     try {
 
         console.log("Me la pelas put", data);
         
-
         const res = await axios.post(`${urlApi}/v1/whatsapp-oficial`, { ...data },
             {
                 headers: {
-                    'Authorization': `${authHeader}`
+                    'Authorization': `Bearer ${token}`
                 }
             }
         );

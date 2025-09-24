@@ -338,6 +338,11 @@ export const ActionsWebhookService = async (
 
     let noAlterNext = false;
 
+  // Logs de início do fluxo
+  try {
+    logger.info(`[FLOW START] nodes:${lengthLoop} connects:${connects.length} next:${next} pressKey:${pressKey || ''} idFlow:${idFlowDb} ticket:${idTicket || ''}`);
+  } catch (e) {}
+
     for (var i = 0; i < lengthLoop; i++) {
       let nodeSelected: any;
       let ticketInit: Ticket;
@@ -388,6 +393,14 @@ export const ActionsWebhookService = async (
           nodeSelected = otherNode;
         }
       }
+
+      // Logs do nó selecionado e contexto
+      try {
+        logger.info(`[FLOW NODE] id:${nodeSelected?.id} type:${nodeSelected?.type}`);
+        logger.info(`[FLOW DATA] ${(() => { try { return JSON.stringify(nodeSelected?.data).slice(0,500); } catch(e){ return 'unserializable'; } })()}`);
+        logger.info(`[FLOW CONTEXT] dataWebhook:${(() => { try { return JSON.stringify(dataWebhook).slice(0,500); } catch(e){ return 'unserializable'; } })()} inputs:${(() => { try { return JSON.stringify(details?.inputs).slice(0,500); } catch(e){ return 'unserializable'; } })()}`);
+        logger.info(`[FLOW VARS] keys:${Object.keys(global.flowVariables || {}).slice(0,25).join(',')}`);
+      } catch (e) {}
 
       console.log(`[FLOW LOOP] Nó selecionado: ${nodeSelected?.id} (${nodeSelected?.type})`);
 
@@ -2072,7 +2085,27 @@ const replaceMessages = (
         }
       }
 
-      if (varValue !== undefined) {
+      // Fallbacks: dados locais (nome/numero/email) e aliases comuns
+      if (varValue === undefined || varValue === null) {
+        const aliases: Record<string, string> = {
+          nombre: "nome",
+          telefono: "numero",
+          telefone: "numero",
+          ciudad: "cidade"
+        };
+        const normalized = aliases[varName] || varName;
+
+        if (dataNoWebhook && typeof dataNoWebhook === "object" && normalized in dataNoWebhook) {
+          varValue = (dataNoWebhook as any)[normalized];
+        }
+
+        // Tentativa adicional: pegar direto do dataWebhook se existir a chave
+        if ((varValue === undefined || varValue === null) && dataWebhook && typeof dataWebhook === "object" && normalized in dataWebhook) {
+          varValue = (dataWebhook as any)[normalized];
+        }
+      }
+
+      if (varValue !== undefined && varValue !== null) {
         return typeof varValue === "object"
           ? JSON.stringify(varValue)
           : String(varValue);

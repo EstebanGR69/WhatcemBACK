@@ -57,6 +57,7 @@ import { FlowImgModel } from "../models/FlowImg";
 import { WebhookModel } from "../models/Webhook";
 import QueueState from "../models/QueueStates";
 import TicketFinalizationReason from "../models/TicketFinalizationReason";
+import WhitelabelSettings from "../models/WhitelabelSettings";
 import PresetWebhookModel from "../models/PresetWebhook";
 import WhatsappLidMap from "../models/WhatsapplidMap";
 import LanguageSettings from "../models/LanguageSettings";
@@ -80,6 +81,7 @@ const models = [
   WhatsappQueue,
   UserQueue,
   Plan,
+  WhitelabelSettings,
   TicketNote,
   QuickMessage,
   Help,

@@ -241,7 +241,7 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
       };
 
       const { webhookLink, connectionId } =
-        await CreateCompanyConnectionOficial(data, authHeader);
+        await CreateCompanyConnectionOficial(data);
 
         console.log("Me vine");
         
