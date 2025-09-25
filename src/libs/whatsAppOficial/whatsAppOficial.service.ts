@@ -56,7 +56,7 @@ export const CreateCompanyConnectionOficial = async (data: ICreateConnectionWhat
 
         const companySaved = await CreateCompanyWhatsAppOficial(company.companyId, company.companyName);
 
-        //console.log(`Empresa: ${companySaved.id}`);
+        console.log(`Empresa: ${companySaved.id}`);
 
         const connection = await CreateConnectionWhatsAppOficial(whatsApp);
 
@@ -100,12 +100,14 @@ export const CreateCompanyWhatsAppOficial = async (companyId: string, companyNam
             }
         });
 
+        console.log("Respuesta empresas ",resCompanies)
+
         const companies = resCompanies.data as Array<IReturnCreateCompanyAPIWhatsAppOficial>;
 
         const company = companies.find(c => String(c.idEmpresaMult100) == companyId);
 
         if (!!company) {
-            //console.log(`Sexo rico`);
+            console.log(`Sexo rico`);
             return company
         }
 
@@ -137,7 +139,7 @@ export const CreateCompanyWhatsAppOficial = async (companyId: string, companyNam
 export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWhatsAppOficialWhatsApp) => {
     try {
 
-        //console.log("Me la pelas put", data);
+        console.log("Me la pelas put", data);
         
         const res = await axios.post(`${urlApi}/v1/whatsapp-oficial`, { ...data },
             {
@@ -163,7 +165,7 @@ export const CreateConnectionWhatsAppOficial = async (data: ICreateConnectionWha
 
 export const UpdateConnectionWhatsAppOficial = async (idWhatsApp: number, data: IUpdateonnectionWhatsAppOficialWhatsApp) => {
     try {
-        //console.log(`UpdateConnectionWhatsAppOficial ${idWhatsApp}: data ${JSON.stringify(data)}`);
+        console.log(`UpdateConnectionWhatsAppOficial ${idWhatsApp}: data ${JSON.stringify(data)}`);
         const res = await axios.put(`${urlApi}/v1/whatsapp-oficial/${idWhatsApp}`, { ...data },
             {
                 headers: {
