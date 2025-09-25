@@ -5,7 +5,7 @@ import mime from "mime-types";
 import FormData from "form-data";
 
 const useOficial = process.env.USE_WHATSAPP_OFICIAL;
-const urlApi = "https://micro.whatcem.com";
+const urlApi = "http://micro.whatcem.com";
 const token = process.env.TOKEN_API_OFICIAL;
 
 
