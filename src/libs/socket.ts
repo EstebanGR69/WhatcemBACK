@@ -45,7 +45,7 @@ export const initIO = (httpServer: Server): SocketIO => {
       return socket.disconnect();
     }
 
-    if (token !== token_api_oficial) {
+    /* if (token !== token_api_oficial) {
       try {
         const decoded = verify(token, authConfig.secret);
         const companyId = socket.nsp.name.split("/")[1]
@@ -66,7 +66,7 @@ export const initIO = (httpServer: Server): SocketIO => {
     } else {
       logger.info(`Client connected namespace ${socket.nsp.name}`);
       logger.info(`Conectado com sucesso na API OFICIAL`);
-    }
+    } */
 
     // 🎂 ADICIONAR: Eventos de heartbeat e gerenciamento de usuários
     const handleHeartbeat = async (socket: any) => {
