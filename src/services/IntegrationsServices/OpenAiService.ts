@@ -77,6 +77,8 @@ const sanitizeName = (name: string): string => {
 // Função para detectar solicitação de transferência para atendente
 const detectTransferRequest = (message: string): boolean => {
 
+  console.log("detectTransferRequest ",message)
+
   const transferKeywords = [
     'hablar con un agente',
     'quiero un agente',
@@ -116,6 +118,8 @@ const checkObjectiveCompletion = async (
   openai: SessionOpenAi
 ): Promise<boolean> => {
   if (!objective || !openai) return false;
+
+  console.log("checkObjectiveCompletion ",conversation)
 
   try {
     // Preparar histórico da conversa para análise
